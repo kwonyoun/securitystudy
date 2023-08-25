@@ -12,31 +12,30 @@ import org.springframework.security.web.SecurityFilterChain;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableMethodSecurity
 public class SpringSecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
+        @Bean
+        PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
+        
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable()
                 .authorizeHttpRequests(request -> request
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/status", "/images/","/status", "/css/", "/join", "/joininsert").permitAll()
-                        .anyRequest().authenticated()
+                	.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                        .anyRequest().authenticated()	// 어떠한 요청이라도 인증필요
                 )
                 .formLogin(login -> login
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login-process")
-                        .usernameParameter("id")
-                        .passwordParameter("pw")
-                        .defaultSuccessUrl("/view", true)
-                        .permitAll()
+                .loginPage("/view/login")	// [A] 커스텀 로그인 페이지 지정
+                .failureUrl("/test") // 로그인 실패 후 이동 페이지
+                .loginProcessingUrl("/login-process")	// [B] submit 받을 url
+                .usernameParameter("userid")	// [C] submit할 아이디
+                .passwordParameter("pw")	// [D] submit할 비밀번호
+                .defaultSuccessUrl("/view/dashboard", true)
+                .permitAll()
                 )
-                .logout(withDefaults());
+                .logout(withDefaults());	// 로그아웃은 기본설정으로 (/logout으로 인증해제)
 
         return http.build();
     }
