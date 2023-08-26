@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.securitystudy.config.AdminAuthorize;
+import com.example.securitystudy.config.UserAuthorize;
 import com.example.securitystudy.service.MemberService;
 import com.example.securitystudy.service.RegisterMemberService;
 
 @Controller
 @RequestMapping("/view")
-public class SecurityController {
+public class ViewController {
 
     @Autowired
     MemberService memberService;
@@ -31,19 +33,16 @@ public class SecurityController {
 
     @GetMapping("/login")
     public String index(){
-        System.out.println("login");
         return "login";
     }
 
     @GetMapping("/join")
     public String joinPage() {
-        System.out.println("join");
         return "join";
     }
 
     @GetMapping("/dashboard")
     public String dashboardPage(@AuthenticationPrincipal User user, Model model) {
-        System.out.println("dashboard");
         model.addAttribute("loginId", user.getUsername());
         model.addAttribute("loginRoles", user.getAuthorities());
         return "dashboard";
@@ -51,8 +50,19 @@ public class SecurityController {
 
     @GetMapping("/admin")
     public String adminPage() {
-        System.out.println("adminPage");
         return "admin";
+    }
+
+    @GetMapping("/setting/admin")
+    @AdminAuthorize //confing.AdminAuthorize
+    public String adminSettingPage() {
+        return "admin_setting";
+    }
+
+    @GetMapping("/setting/user")
+    @UserAuthorize
+    public String userSettingPage() {
+        return "user_setting";
     }
 
     

@@ -15,6 +15,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class SpringSecurityConfig {
 
+        //비밀번호 암호화를 위한 것.
         @Bean
         PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
@@ -27,7 +28,13 @@ public class SpringSecurityConfig {
                 	.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/view/join")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/view/admin")).hasAnyRole("ADMIN") // view/admin에 접근하려면 roles의 ADMIN만 접근할 수 있다. 
+                        // view/admin에 접근하려면 roles의 ADMIN만 접근할 수 있다. 
+                        .requestMatchers(new AntPathRequestMatcher("/view/admin")).hasAnyRole("ADMIN") //이건 test
+                        .requestMatchers(new AntPathRequestMatcher("/view/setting/admin")).hasAnyRole("ADMIN")
+                        // view/admin에 접근하려면 roles의 USER만 접근할 수 있다. 
+                        //따로 config.UserAuthorize에서 설정을 해주면 이 곳에서 경로를 지정해주지 않아도 된다.
+                        //나는 그냥 여기로 경로 지정해줄거임.
+                        .requestMatchers(new AntPathRequestMatcher("/view/setting/user")).hasAnyRole("USER")
                         .requestMatchers(new AntPathRequestMatcher("/auth/join")).permitAll()
                         .anyRequest().authenticated()	// 어떠한 요청이라도 인증필요
                 )
