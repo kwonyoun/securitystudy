@@ -9,14 +9,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-// import com.example.securitystudy.service.MemberService;
+import com.example.securitystudy.service.MemberService;
+import com.example.securitystudy.service.RegisterMemberService;
 
 @Controller
 @RequestMapping("/view")
 public class SecurityController {
 
-    // @Autowired
-    // MemberService memberService;
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    RegisterMemberService RegisterMemberService;
 
 
     @GetMapping("/test")
@@ -37,22 +41,18 @@ public class SecurityController {
         return "join";
     }
 
-    // @PostMapping("/login-process")
-    // public String login(@AuthenticationPrincipal User user) {
-    //     // boolean isValidMember = memberService.isValidMember(dto.getMemId(), dto.getMemPw());
-    //     // if (isValidMember)
-    //     //     return "dashboard";
-    //     System.out.println(user.getUsername());
-    //     System.out.println(user.getPassword());
-    //     return "test";
-    // }
-
     @GetMapping("/dashboard")
     public String dashboardPage(@AuthenticationPrincipal User user, Model model) {
         System.out.println("dashboard");
         model.addAttribute("loginId", user.getUsername());
         model.addAttribute("loginRoles", user.getAuthorities());
         return "dashboard";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage() {
+        System.out.println("adminPage");
+        return "admin";
     }
 
     

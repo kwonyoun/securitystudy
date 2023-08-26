@@ -26,13 +26,17 @@ public class MyUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String insertedUserId) throws UsernameNotFoundException {
         Optional<MemberVO> findOne = memberService.findOne(insertedUserId);
+        System.out.println("MyUserDetailsService: "+findOne);
+
         MemberVO member = findOne.orElseThrow(() -> new UsernameNotFoundException("없는 회원입니다 ㅠ"));
 
         return User.builder()
                 .username(member.getUserid())
                 .password(member.getPw())
-                // .roles(member.getRoles())
+                .roles(member.getRoles())
                 .build();
+    
+
     }
     
 }

@@ -10,5 +10,6 @@ import com.example.securitystudy.vo.MemberVO;
 public interface MemberDao {
 
     Optional<MemberVO> findByUserid(String userId);
+    public int insertJoin(MemberVO member);
     
 }

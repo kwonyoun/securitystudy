@@ -5,8 +5,11 @@
 <mapper namespace="com.example.securitystudy.dao.MemberDao">
 
 	<select id="findByUserid" parameterType="String" resultType="com.example.securitystudy.vo.MemberVO" >
-		SELECT * from user WHERE userid = #{userid}
+		SELECT * from userinfo WHERE userid = #{userid}
 	</select>
 
+	<insert id="insertJoin" parameterType="com.example.securitystudy.vo.MemberVO" >
+		insert into userinfo values ( #{userid}, #{pw}, #{roles}  )
+	</insert>
+
 </mapper>
-	

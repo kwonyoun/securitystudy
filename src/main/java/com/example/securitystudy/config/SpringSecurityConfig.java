@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -24,6 +25,10 @@ public class SpringSecurityConfig {
         http.csrf().disable().cors().disable()
                 .authorizeHttpRequests(request -> request
                 	.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/view/join")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/view/admin")).hasAnyRole("ADMIN") // view/admin에 접근하려면 roles의 ADMIN만 접근할 수 있다. 
+                        .requestMatchers(new AntPathRequestMatcher("/auth/join")).permitAll()
                         .anyRequest().authenticated()	// 어떠한 요청이라도 인증필요
                 )
                 .formLogin(login -> login
