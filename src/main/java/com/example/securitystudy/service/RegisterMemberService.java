@@ -1,6 +1,5 @@
 package com.example.securitystudy.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +10,9 @@ import com.example.securitystudy.vo.MemberVO;
 public class RegisterMemberService {    //멤버 등록 서비스
 
     //autowired대신에 이렇게 불러옴?? @오토와이어드 안써도됌
+    //'생성자 주입' 방식 이었따.
     private final PasswordEncoder passwordEncoder;
     private final MemberDao dao;
-
     public RegisterMemberService(PasswordEncoder passwordEncoder, MemberDao dao) {
         this.passwordEncoder = passwordEncoder;
         this.dao = dao;
